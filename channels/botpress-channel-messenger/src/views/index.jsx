@@ -97,6 +97,7 @@ export default class MessengerModule extends React.Component {
       'accessToken',
       'appSecret',
       'applicationID',
+      'graphVersion',
       'automaticallyMarkAsRead',
       'composerInputDisabled',
       'displayGetStarted',
@@ -148,7 +149,7 @@ export default class MessengerModule extends React.Component {
   handleChange(event) {
     var { name, value } = event.target
 
-    var connectionInputList = ['applicationID', 'accessToken', 'hostname', 'appSecret']
+    var connectionInputList = ['applicationID', 'accessToken', 'hostname', 'appSecret', 'graphVersion']
     if (_.includes(connectionInputList, name)) {
       this.setState({ validated: false })
     }
@@ -193,7 +194,8 @@ export default class MessengerModule extends React.Component {
         applicationID: this.state.applicationID,
         accessToken: this.state.accessToken,
         appSecret: this.state.appSecret,
-        hostname: this.state.hostname
+        hostname: this.state.hostname,
+        graphVersion: this.state.graphVersion
       })
       .then(() => {
         this.setState({ connected: !this.state.connected })
@@ -735,6 +737,7 @@ export default class MessengerModule extends React.Component {
             {this.renderTextAreaInput('Access Token', 'accessToken', this.state.homepage+'#3-get-access-token', { disabled: this.state.connected })}
             {this.renderTextInput('App Secret', 'appSecret', this.state.homepage+'#2-get-app-id-and-app-secret', { disabled: this.state.connected })}
             {this.renderHostnameTextInput({ disabled: this.state.connected })}
+            {this.renderTextInput('Graph API Version', 'graphVersion', this.state.homepage+'#4-get-app-id-and-app-secret', { disabled: this.state.connected })}
             {this.renderConnectionButton()}
           </div>
         </div>

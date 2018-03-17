@@ -116,6 +116,7 @@ module.exports = {
     accessToken: { type: 'string', required: true, default: '', env: 'MESSENGER_ACCESS_TOKEN' },
     appSecret: { type: 'string', required: true, default: '', env: 'MESSENGER_APP_SECRET' },
     verifyToken: { type: 'string', required: false, default: uuid.v4() },
+    graphVersion: { type: 'string', required: true, default: "2.12" },
     enabled: { type: 'bool', required: true, default: true },
     validated: { type: 'bool', required: false, default: false }, // deprecated --> automaticcaly reconfigure on start (config = enabled)
     connected: { type: 'bool', required: false, default: false }, // deprecated --> automaticcaly reconfigure on start (config = enabled)
