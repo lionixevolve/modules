@@ -45,12 +45,14 @@ export default class MessengerModule extends React.Component {
     this.handleRemoveFromList = this.handleRemoveFromList.bind(this)
     this.handleAddToTrustedDomainsList = this.handleAddToTrustedDomainsList.bind(this)
     this.handleAddToPersistentMenuList = this.handleAddToPersistentMenuList.bind(this)
+    this.handleAddToHandoverAppsList = this.handleAddToHandoverAppsList.bind(this)
     this.handleValidation = this.handleValidation.bind(this)
     this.handleConnection = this.handleConnection.bind(this)
     this.handlePaymentTesterChange = this.handlePaymentTesterChange.bind(this)
     this.renderPersistentMenuItem = this.renderPersistentMenuItem.bind(this)
     this.renderDomainElement = this.renderDomainElement.bind(this)
     this.renderAutoComplete = this.renderAutoComplete.bind(this)
+    this.renderHandoverAppElement = this.renderHandoverAppElement.bind(this)
     this.renderPaymentTesterElement = this.renderPaymentTesterElement.bind(this)
     this.handleDismissError = this.handleDismissError.bind(this)
     this.renderGetStartedMessage = this.renderGetStartedMessage.bind(this)
@@ -109,6 +111,7 @@ export default class MessengerModule extends React.Component {
       'targetAudienceOpenToSome',
       'targetAudienceCloseToSome',
       'trustedDomains',
+      'handoverApps',
       'paymentTesters',
       'chatExtensionHomeUrl',
       'chatExtensionShowShareButton',
@@ -223,6 +226,16 @@ export default class MessengerModule extends React.Component {
     if (input && input.value !== '') {
       this.setState({
         trustedDomains: _.concat(this.state.trustedDomains, input.value)
+      })
+      input.value = ''
+    }
+  }
+
+  handleAddToHandoverAppsList() {
+    const input = ReactDOM.findDOMNode(this.handoverAppListInput)
+    if (input && input.value !== '') {
+      this.setState({
+        handoverApps: _.concat(this.state.handoverApps, input.value)
       })
       input.value = ''
     }
@@ -416,6 +429,15 @@ export default class MessengerModule extends React.Component {
     </ListGroupItem>
   }
 
+  renderHandoverAppElement(handoverApp, key) {
+   const removeHandler = () => this.handleRemoveFromList(handoverApp, 'handoverApps')
+
+   return <ListGroupItem key={handoverApp}>
+     {key+1} -  {handoverApp}
+     <Glyphicon className="pull-right" glyph="remove" onClick={removeHandler} />
+   </ListGroupItem>
+  }
+
   renderPaymentTesterElement(tester) {
     const removeHandler = () => {
       this.handleRemoveFromList(tester, 'paymentTesters')
@@ -516,6 +538,33 @@ export default class MessengerModule extends React.Component {
       </div>
     )
   }
+
+  renderHandoverAppList() {
+      const handoverAppsElements = this.state.handoverApps.map(this.renderHandoverAppElement)
+
+      return (
+        <div>
+          <FormGroup>
+            {this.renderLabel('Handover Apps', this.state.homepage+'#handover-apps')}
+            <Col sm={7}>
+              <ControlLabel>Current apps:</ControlLabel>
+              <ListGroup>
+                {handoverAppsElements}
+              </ListGroup>
+            </Col>
+          </FormGroup>
+          <FormGroup>
+            <Col smOffset={3} sm={7}>
+              <ControlLabel>Add a new App ID:</ControlLabel>
+              <FormControl ref={(input) => this.handoverAppListInput = input} type="text"/>
+              <Button className='bp-button' onClick={() => this.handleAddToHandoverAppsList()}>
+                Add APP ID
+              </Button>
+            </Col>
+          </FormGroup>
+        </div>
+      )
+    }
 
   renderPaymentTesters() {
     if(this.state.paymentTesters === undefined) {
@@ -768,6 +817,7 @@ export default class MessengerModule extends React.Component {
           <div>
             {this.renderTargetAudience()}
             {this.renderTrustedDomainList()}
+            {this.renderHandoverAppList()}
             {this.renderChatExtensions()}
             {this.renderConfigView()}
           </div>

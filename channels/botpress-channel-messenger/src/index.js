@@ -117,6 +117,7 @@ module.exports = {
     appSecret: { type: 'string', required: true, default: '', env: 'MESSENGER_APP_SECRET' },
     verifyToken: { type: 'string', required: false, default: uuid.v4() },
     graphVersion: { type: 'string', required: true, default: "2.12" },
+    appRoles: { type: 'string', required: false, default: "primary_receiver" },
     enabled: { type: 'bool', required: true, default: true },
     validated: { type: 'bool', required: false, default: false }, // deprecated --> automaticcaly reconfigure on start (config = enabled)
     connected: { type: 'bool', required: false, default: false }, // deprecated --> automaticcaly reconfigure on start (config = enabled)
@@ -132,6 +133,7 @@ module.exports = {
     targetAudienceOpenToSome: { type: 'string', required: false },
     targetAudienceCloseToSome: { type: 'string', required: false },
     trustedDomains: { type: 'any', required: false, default: [], validation: v => _.isArray(v) },
+    handoverApps: { type: 'any', required: false, default: [], validation: v => _.isArray(v) },
     autoRespondGetStarted: { type: 'bool', required: false, default: true }, // deprecated
     autoResponse: { type: 'string', required: false, default: 'Hello!' },     // deprecated
     autoResponseOption: { type: 'string', required: false, default: 'autoResponseText' },
@@ -141,16 +143,19 @@ module.exports = {
     chatExtensionHomeUrl: { type: 'string', required: false, default: '' },
     chatExtensionInTest: { type: 'bool', required: false, default: true },
     chatExtensionShowShareButton: { type: 'bool', required: false, default: false },
-    webhookSubscriptionFields: { 
-      type: 'any', 
-      required: true, 
+    webhookSubscriptionFields: {
+      type: 'any',
+      required: true,
       default: [
         'message_deliveries',
         'message_reads',
         'messages',
         'messaging_optins',
         'messaging_postbacks',
-        'messaging_referrals'
+        'messaging_referrals',
+        'messaging_handovers',
+        'standby',
+        'messaging_policy_enforcement',
       ]
     }
   },

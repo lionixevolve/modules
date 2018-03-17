@@ -110,6 +110,20 @@ module.exports = (bp, messenger) => {
     })
   })
 
+  messenger.on('app_roles', e=> {
+    preprocessEvent(e)
+    .then(role=> {
+        console.log(role);
+        bp.middlewares.sendIncoming({
+        platform: 'facebook',
+        type: 'app_roles',
+        text: 'app_roles',
+        app_roles: role,
+        raw: e
+      })
+    })
+  })
+
   messenger.on('delivery', e => {
 
     _.values(outgoing.pending).forEach(pending => {
